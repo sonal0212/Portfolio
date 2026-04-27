@@ -6,7 +6,7 @@ const skillGroups = [
     category: 'Languages',
     icon: '{ }',
     color: '#C0392B',
-    skills: ['Java', 'JavaScript', 'TypeScript', 'SQL', 'HTML5', 'CSS3', 'jQuery'],
+    skills: ['Java', 'JavaScript', 'TypeScript', 'Python', 'SQL', 'HTML5', 'CSS3', 'jQuery'],
   },
   {
     category: 'Frameworks',
@@ -22,13 +22,14 @@ const skillGroups = [
       'Next.js',
       'React',
       'Bootstrap',
+      'Maven',
     ],
   },
   {
     category: 'Databases',
     icon: '⬡',
     color: '#1A5C3A',
-    skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'],
+    skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'RabbitMQ', 'Firebase', 'Supabase'],
   },
   {
     category: 'Backend & APIs',
@@ -36,12 +37,12 @@ const skillGroups = [
     color: '#7B3FA0',
     skills: [
       'RESTful APIs',
-      'Microservices',
       'MVC Architecture',
-      'JWT Auth',
+      'Microservices',
+      'JWT / Session Auth',
       'WebSocket (STOMP)',
       'CRUD',
-      'Session Auth',
+      'JSON / API Integration',
     ],
   },
   {
@@ -51,11 +52,14 @@ const skillGroups = [
     skills: [
       'RAG',
       'LLM Integration',
+      'MCP (Model Context Protocol)',
       'Prompt Engineering',
-      'OpenAI API',
-      'Claude API',
-      'AI Chatbots',
+      'AI Chatbot Development',
       'Vector Databases',
+      'OpenAI',
+      'Gemini CLI',
+      'Openclaw',
+      'Open-source LLMs (Qwen, Mistral, Gemma)',
     ],
   },
   {
@@ -65,13 +69,14 @@ const skillGroups = [
     skills: [
       'Git',
       'GitHub / GitLab',
+      'GitHub Actions',
       'IntelliJ IDEA',
       'VS Code',
       'Postman',
-      'Vercel',
       'n8n',
-      'SonarQube',
-      'Maven',
+      'Webhooks',
+      'AI Pipelines',
+      'AWS',
     ],
   },
 ]
@@ -99,17 +104,26 @@ function SkillGroup({ group, index }) {
         transitionDelay: `${index * 0.08}s`,
       }}
     >
+      <div className="skill-group__band" />
       <div className="skill-group__header">
-        <span className="skill-group__icon caveat">{group.icon}</span>
-        <h3 className="skill-group__category mono">{group.category}</h3>
+        <div className="skill-group__title">
+          <span className="skill-group__icon">{group.icon}</span>
+          <h3 className="skill-group__category mono">{group.category}</h3>
+        </div>
+        <span className="skill-group__count caveat">{group.skills.length}</span>
       </div>
       <div className="skill-group__pills">
-        {group.skills.map((skill) => (
-          <span key={skill} className="skill-pill">
+        {group.skills.map((skill, idx) => (
+          <span
+            key={skill}
+            className="skill-pill"
+            style={{ '--pill-i': idx }}
+          >
             {skill}
           </span>
         ))}
       </div>
+      <span className="skill-group__corner" aria-hidden="true" />
     </div>
   )
 }
