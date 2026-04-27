@@ -200,7 +200,7 @@ Update `vite.config.js` with `base: '/repository-name/'` and push the `dist/` fo
 - **Email** — sonals02.singh@gmail.com
 - **GitHub** — [@sonal0212](https://github.com/sonal0212)
 - **LinkedIn** — [sonal-singh-dev](https://linkedin.com/in/sonal-singh-dev)
-- **Phone** — +1 769-629-3984
+- **Phone** — +91 769-629-3984
 
 ## 📄 License
 
