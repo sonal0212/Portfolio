@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import './Projects.css'
 
-const screenshot = (url) =>
-  `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=800`
+const screenshot = (url, waitMs = 0) => {
+  const wait = waitMs > 0 ? `&waitFor=${waitMs}` : ''
+  return `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=800${wait}`
+}
 
 const projects = [
   {
@@ -15,9 +17,9 @@ const projects = [
     accent: '#C0392B',
     rotate: '-2deg',
     label: '01',
-    github: 'https://github.com/sonal0212',
-    live: null,
-    image: screenshot('https://github.com/sonal0212'),
+    github: 'https://github.com/sonal0212/TaskFlow-AI',
+    live: 'https://taskflowwithai.netlify.app/',
+    image: screenshot('https://taskflowwithai.netlify.app/'),
   },
   {
     title: 'Platform',
@@ -73,7 +75,7 @@ const projects = [
     label: '05',
     github: 'https://github.com/sonal0212',
     live: 'https://dentalcare-dev.netlify.app/',
-    image: screenshot('https://dentalcare-dev.netlify.app/'),
+    image: screenshot('https://dentalcare-dev.netlify.app/', 20000),
   },
 ]
 
