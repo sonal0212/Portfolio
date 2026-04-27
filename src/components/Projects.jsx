@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import './Projects.css'
 
+const screenshot = (url) =>
+  `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=800`
+
 const projects = [
   {
     title: 'TaskFlow AI',
@@ -13,6 +16,7 @@ const projects = [
     rotate: '-2deg',
     label: '01',
     github: 'https://github.com/sonal0212',
+    image: screenshot('https://github.com/sonal0212'),
   },
   {
     title: 'Platform',
@@ -25,6 +29,7 @@ const projects = [
     rotate: '1.5deg',
     label: '02',
     github: 'https://github.com/sonal0212',
+    image: screenshot('https://github.com/sonal0212'),
   },
   {
     title: 'Receipt Slayer',
@@ -37,6 +42,7 @@ const projects = [
     rotate: '-1deg',
     label: '03',
     github: 'https://receipt-slayer.netlify.app/',
+    image: screenshot('https://receipt-slayer.netlify.app/'),
   },
   {
     title: 'Omnifood',
@@ -48,7 +54,8 @@ const projects = [
     accent: '#FF9500',
     rotate: '1.2deg',
     label: '04',
-    github: 'https://app.netlify.com/projects/omnifood-sonal/overview',
+    github: 'https://omnifood-sonal.netlify.app',
+    image: screenshot('https://omnifood-sonal.netlify.app'),
   },
   {
     title: 'DentalCare',
@@ -61,6 +68,7 @@ const projects = [
     rotate: '-1.5deg',
     label: '05',
     github: 'https://dentalcare-dev.netlify.app/',
+    image: screenshot('https://dentalcare-dev.netlify.app/'),
   },
 ]
 
@@ -94,9 +102,20 @@ function ProjectCard({ project, index }) {
       {/* Polaroid photo area */}
       <div className="project-card__photo">
         <div className="project-card__photo-inner">
-          <span className="project-card__num caveat">{project.label}</span>
-          <div className="project-card__photo-grid" />
-          <p className="project-card__photo-title caveat">{project.title}</p>
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={`${project.title} preview`}
+              className="project-card__photo-img"
+              loading="lazy"
+            />
+          ) : (
+            <>
+              <span className="project-card__num caveat">{project.label}</span>
+              <div className="project-card__photo-grid" />
+              <p className="project-card__photo-title caveat">{project.title}</p>
+            </>
+          )}
         </div>
       </div>
 

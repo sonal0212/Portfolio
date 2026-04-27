@@ -47,6 +47,7 @@ export default function Navbar({ activeSection }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Download Resume"
+            download="Sonal Singh - Resume.pdf"
           >
             resume ↗
           </a>
