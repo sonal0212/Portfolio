@@ -1,0 +1,143 @@
+.navbar {
+  position: fixed;
+  top: 3px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0.8rem 0;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar--scrolled {
+  background: rgba(245, 237, 214, 0.92);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 var(--rule);
+}
+
+.navbar__inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  transition: color 0.2s;
+}
+
+.navbar__logo:hover {
+  color: var(--red);
+}
+
+.navbar__logo-dot {
+  color: var(--red);
+}
+
+.navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+.navbar__link {
+  font-size: 1.05rem;
+  color: var(--ink-light);
+  position: relative;
+  transition: color 0.2s;
+  padding-bottom: 2px;
+}
+
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--red);
+  transition: width 0.25s ease;
+}
+
+.navbar__link:hover,
+.navbar__link.active {
+  color: var(--ink);
+}
+
+.navbar__link:hover::after,
+.navbar__link.active::after {
+  width: 100%;
+}
+
+.navbar__resume {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 0.3rem 0.8rem;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.navbar__resume:hover {
+  background: var(--red);
+  color: var(--paper);
+}
+
+.navbar__burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+
+.navbar__burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--ink);
+  transition: 0.3s;
+}
+
+@media (max-width: 640px) {
+  .navbar__burger {
+    display: flex;
+  }
+
+  .navbar__nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(245, 237, 214, 0.97);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem 2rem;
+    border-top: 1px solid var(--rule);
+    box-shadow: 0 8px 20px rgba(44,24,16,0.1);
+  }
+
+  .navbar__nav--open {
+    display: flex;
+  }
+
+  .navbar__link {
+    padding: 0.6rem 0;
+    font-size: 1.3rem;
+    border-bottom: 1px solid var(--rule);
+    width: 100%;
+    text-align: left;
+  }
+
+  .navbar__resume {
+    margin-top: 1rem;
+    text-align: center;
+  }
+}

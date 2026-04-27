@@ -1,0 +1,155 @@
+import { useEffect, useRef } from 'react'
+import './Skills.css'
+
+const skillGroups = [
+  {
+    category: 'Languages',
+    icon: '{ }',
+    color: '#C0392B',
+    skills: ['Java', 'JavaScript', 'TypeScript', 'SQL', 'HTML5', 'CSS3', 'jQuery'],
+  },
+  {
+    category: 'Frameworks',
+    icon: '⚡',
+    color: '#2C4A7C',
+    skills: [
+      'Spring Boot',
+      'Spring MVC',
+      'Spring Data JPA',
+      'Spring Security',
+      'Spring AI',
+      'Hibernate',
+      'Next.js',
+      'React',
+      'Bootstrap',
+    ],
+  },
+  {
+    category: 'Databases',
+    icon: '⬡',
+    color: '#1A5C3A',
+    skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'],
+  },
+  {
+    category: 'Backend & APIs',
+    icon: '⇄',
+    color: '#7B3FA0',
+    skills: [
+      'RESTful APIs',
+      'Microservices',
+      'MVC Architecture',
+      'JWT Auth',
+      'WebSocket (STOMP)',
+      'CRUD',
+      'Session Auth',
+    ],
+  },
+  {
+    category: 'AI / LLM',
+    icon: '✦',
+    color: '#C0392B',
+    skills: [
+      'RAG',
+      'LLM Integration',
+      'Prompt Engineering',
+      'OpenAI API',
+      'Claude API',
+      'AI Chatbots',
+      'Vector Databases',
+    ],
+  },
+  {
+    category: 'Tools & DevOps',
+    icon: '◈',
+    color: '#2C4A7C',
+    skills: [
+      'Git',
+      'GitHub / GitLab',
+      'IntelliJ IDEA',
+      'VS Code',
+      'Postman',
+      'Vercel',
+      'n8n',
+      'SonarQube',
+      'Maven',
+    ],
+  },
+]
+
+function SkillGroup({ group, index }) {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) ref.current?.classList.add('skill-group--visible')
+      },
+      { threshold: 0.1 }
+    )
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div
+      className="skill-group"
+      ref={ref}
+      style={{
+        '--group-color': group.color,
+        transitionDelay: `${index * 0.08}s`,
+      }}
+    >
+      <div className="skill-group__header">
+        <span className="skill-group__icon caveat">{group.icon}</span>
+        <h3 className="skill-group__category mono">{group.category}</h3>
+      </div>
+      <div className="skill-group__pills">
+        {group.skills.map((skill) => (
+          <span key={skill} className="skill-pill">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export default function Skills() {
+  const headingRef = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) headingRef.current?.classList.add('visible')
+      },
+      { threshold: 0.2 }
+    )
+    if (headingRef.current) observer.observe(headingRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <section id="skills">
+      <div className="container">
+        <div className="fade-in" ref={headingRef}>
+          <p className="section-stamp">§ 04 — Technical Skills</p>
+          <h2 className="section-title">The <em>toolkit.</em></h2>
+          <p className="skills__intro">
+            Languages, frameworks, and tools I reach for — and know well.
+          </p>
+        </div>
+
+        <div className="skills__grid">
+          {skillGroups.map((group, i) => (
+            <SkillGroup key={group.category} group={group} index={i} />
+          ))}
+        </div>
+
+        {/* Handwritten aside */}
+        <div className="skills__aside caveat">
+          * always learning — currently exploring agentic AI systems and distributed architectures.
+        </div>
+      </div>
+    </section>
+  )
+}

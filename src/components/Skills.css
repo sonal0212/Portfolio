@@ -1,0 +1,108 @@
+.skills__intro {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  color: var(--ink-light);
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.skills__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.skill-group {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s ease;
+}
+
+.skill-group--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skill-group:hover {
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.08);
+}
+
+/* Color accent stripe on left */
+.skill-group::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--group-color, var(--red));
+  border-radius: 4px 0 0 4px;
+}
+
+.skill-group__header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.skill-group__icon {
+  font-size: 1.2rem;
+  color: var(--group-color, var(--red));
+  width: 24px;
+  text-align: center;
+}
+
+.skill-group__category {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  font-weight: 500;
+}
+
+.skill-group__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skill-pill {
+  font-family: 'Caveat', cursive;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.2rem 0.65rem;
+  background: color-mix(in srgb, var(--group-color, var(--red)) 8%, var(--paper));
+  color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--group-color, var(--red)) 20%, transparent);
+  border-radius: 100px;
+  transition: background 0.2s, transform 0.15s;
+  cursor: default;
+}
+
+.skill-pill:hover {
+  background: color-mix(in srgb, var(--group-color, var(--red)) 15%, var(--paper));
+  transform: translateY(-1px);
+}
+
+/* Aside note */
+.skills__aside {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: var(--ink-faint);
+  font-style: italic;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.25rem;
+}
+
+@media (max-width: 560px) {
+  .skills__grid {
+    grid-template-columns: 1fr;
+  }
+}

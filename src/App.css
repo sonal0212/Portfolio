@@ -1,0 +1,119 @@
+.app {
+  min-height: 100vh;
+}
+
+/* Typography helpers */
+.caveat {
+  font-family: 'Caveat', cursive;
+}
+
+.kalam {
+  font-family: 'Kalam', cursive;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.serif {
+  font-family: 'Instrument Serif', serif;
+}
+
+/* Section number stamp */
+.section-stamp {
+  font-family: 'Caveat', cursive;
+  font-size: 0.85rem;
+  color: var(--red);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-stamp::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--red);
+  opacity: 0.3;
+  max-width: 60px;
+}
+
+/* Section title */
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.section-title em {
+  color: var(--red);
+  font-style: italic;
+}
+
+/* Tape strip */
+.tape {
+  width: 60px;
+  height: 18px;
+  background: rgba(240, 220, 160, 0.7);
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Corner fold */
+.corner-fold {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 24px 24px;
+  border-color: transparent transparent var(--paper-darker) transparent;
+}
+
+/* Divider */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 60px 0;
+}
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Site footer */
+.site-footer {
+  padding: 2rem 0 3rem;
+  text-align: center;
+  border-top: 1px solid var(--rule);
+  margin-top: 2rem;
+}
+
+.footer-text {
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  color: var(--ink-faint);
+}
+
+.footer-year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+}

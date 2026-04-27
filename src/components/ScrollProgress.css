@@ -1,0 +1,25 @@
+.scroll-progress-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 3px;
+  background: var(--paper-dark);
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  background: var(--red);
+  transition: width 0.1s linear;
+}
+
+.scroll-progress-label {
+  position: fixed;
+  top: 6px;
+  right: 12px;
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+  z-index: 1001;
+}
