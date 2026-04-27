@@ -22,8 +22,8 @@ const socials = [
   },
   {
     label: 'Phone',
-    handle: '+1 769-629-3984',
-    href: 'tel:+17696293984',
+    handle: '+91 769-629-3984',
+    href: 'tel:+917696293984',
     desc: 'call or text',
   },
 ]
