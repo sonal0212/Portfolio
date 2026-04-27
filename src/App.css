@@ -99,6 +99,58 @@
   transform: translateY(0);
 }
 
+/* Section heading reveal — stamp slides in from the left */
+.fade-in .section-stamp {
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity 0.55s ease 0.05s, transform 0.55s ease 0.05s;
+}
+
+.fade-in.visible .section-stamp {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Section title — accent word gets a drawn underline */
+.section-title em {
+  position: relative;
+  display: inline-block;
+}
+
+.section-title em::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.04em;
+  height: 2px;
+  background: var(--red);
+  opacity: 0.45;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.45s;
+}
+
+.fade-in.visible .section-title em::after {
+  transform: scaleX(1);
+}
+
+/* Section intro paragraphs slide up gently */
+.fade-in .projects__intro,
+.fade-in .skills__intro,
+.fade-in .work__intro {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+}
+
+.fade-in.visible .projects__intro,
+.fade-in.visible .skills__intro,
+.fade-in.visible .work__intro {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Site footer */
 .site-footer {
   padding: 2rem 0 3rem;

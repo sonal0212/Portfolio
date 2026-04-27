@@ -130,7 +130,7 @@ export default function Work() {
           ))}
 
           {/* Education card */}
-          <div className="work-card work-card--edu">
+          <div className="work-card work-card--edu work-card--visible">
             <div className="work-card__line work-card__line--last" />
             <div className="work-card__dot work-card__dot--edu" />
             <div className="work-card__body">

@@ -10,12 +10,13 @@ const projects = [
     subtitle: 'AI-Powered Task Management Platform',
     period: '2024 — Present',
     description:
-      'Full-stack AI task manager with real-time multi-user collaboration via WebSocket (STOMP). JWT auth with 15-min access tokens, 7-day refresh rotation, and Redis token blacklisting. Spring AI + GPT-4o-mini for intelligent task suggestions and auto-prioritisation. Redis caching reduced PostgreSQL read load by 60% under concurrent usage.',
+      'Full-stack AI task manager with real-time multi-user collaboration via WebSocket (STOMP). JWT auth with short-lived access tokens, refresh-token rotation, and Redis token blacklisting. Spring AI + GPT-4o-mini for intelligent task suggestions and auto-prioritisation. Redis read-through caching to relieve PostgreSQL under concurrent usage.',
     tags: ['Spring Boot', 'Next.js', 'TypeScript', 'PostgreSQL', 'Redis', 'Spring AI', 'OpenAI', 'WebSocket', 'JWT'],
     accent: '#C0392B',
     rotate: '-2deg',
     label: '01',
     github: 'https://github.com/sonal0212',
+    live: null,
     image: screenshot('https://github.com/sonal0212'),
   },
   {
@@ -23,12 +24,13 @@ const projects = [
     subtitle: 'Internal Enterprise Application',
     period: 'Apr 2024 — Present',
     description:
-      'Push notification microservice delivering real-time alerts to 500+ concurrent users with 99.5% delivery rate. Interactive reporting engine with custom SQL join builder and output in 6+ ApexCharts types. Hierarchical RBAC supporting admin, manager, and viewer roles across 10+ modules.',
+      'Push notification microservice delivering real-time alerts to 500+ concurrent users across the org. Interactive reporting engine with a custom SQL join builder and output in multiple ApexCharts types. Hierarchical RBAC supporting admin, manager, and viewer roles across multiple modules.',
     tags: ['Java', 'jQuery', 'Node.js', 'PostgreSQL', 'REST API', 'ApexCharts', 'Web Push API'],
     accent: '#2C4A7C',
     rotate: '1.5deg',
     label: '02',
     github: 'https://github.com/sonal0212',
+    live: null,
     image: screenshot('https://github.com/sonal0212'),
   },
   {
@@ -41,7 +43,8 @@ const projects = [
     accent: '#1A5C3A',
     rotate: '-1deg',
     label: '03',
-    github: 'https://receipt-slayer.netlify.app/',
+    github: 'https://github.com/sonal0212',
+    live: 'https://receipt-slayer.netlify.app/',
     image: screenshot('https://receipt-slayer.netlify.app/'),
   },
   {
@@ -54,7 +57,8 @@ const projects = [
     accent: '#FF9500',
     rotate: '1.2deg',
     label: '04',
-    github: 'https://omnifood-sonal.netlify.app',
+    github: 'https://github.com/sonal0212',
+    live: 'https://omnifood-sonal.netlify.app',
     image: screenshot('https://omnifood-sonal.netlify.app'),
   },
   {
@@ -67,7 +71,8 @@ const projects = [
     accent: '#4A90E2',
     rotate: '-1.5deg',
     label: '05',
-    github: 'https://dentalcare-dev.netlify.app/',
+    github: 'https://github.com/sonal0212',
+    live: 'https://dentalcare-dev.netlify.app/',
     image: screenshot('https://dentalcare-dev.netlify.app/'),
   },
 ]
@@ -100,24 +105,52 @@ function ProjectCard({ project, index }) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Polaroid photo area */}
-      <div className="project-card__photo">
-        <div className="project-card__photo-inner">
-          {project.image ? (
-            <img
-              src={project.image}
-              alt={`${project.title} preview`}
-              className="project-card__photo-img"
-              loading="lazy"
-            />
-          ) : (
-            <>
-              <span className="project-card__num caveat">{project.label}</span>
-              <div className="project-card__photo-grid" />
-              <p className="project-card__photo-title caveat">{project.title}</p>
-            </>
-          )}
+      {project.live ? (
+        <a
+          className="project-card__photo project-card__photo--link"
+          href={project.live}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${project.title} live site`}
+        >
+          <div className="project-card__photo-inner">
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={`${project.title} preview`}
+                className="project-card__photo-img"
+                loading="lazy"
+              />
+            ) : (
+              <>
+                <span className="project-card__num caveat">{project.label}</span>
+                <div className="project-card__photo-grid" />
+                <p className="project-card__photo-title caveat">{project.title}</p>
+              </>
+            )}
+            <span className="project-card__photo-overlay mono">visit live ↗</span>
+          </div>
+        </a>
+      ) : (
+        <div className="project-card__photo">
+          <div className="project-card__photo-inner">
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={`${project.title} preview`}
+                className="project-card__photo-img"
+                loading="lazy"
+              />
+            ) : (
+              <>
+                <span className="project-card__num caveat">{project.label}</span>
+                <div className="project-card__photo-grid" />
+                <p className="project-card__photo-title caveat">{project.title}</p>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Polaroid caption area */}
       <div className="project-card__caption">

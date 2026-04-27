@@ -25,6 +25,10 @@
   transform: translateX(0);
 }
 
+.work__timeline > .work-card:last-child {
+  margin-bottom: 0;
+}
+
 .work-card__line {
   position: absolute;
   left: -1.95rem;
