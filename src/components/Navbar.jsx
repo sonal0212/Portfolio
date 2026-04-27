@@ -28,7 +28,7 @@ export default function Navbar({ activeSection }) {
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner">
         <button className="navbar__logo caveat" onClick={() => scrollTo('about')}>
-          SS<span className="navbar__logo-dot">.</span>
+          Sonal Singh
         </button>
 
         <nav className={`navbar__nav ${menuOpen ? 'navbar__nav--open' : ''}`}>
@@ -43,10 +43,12 @@ export default function Navbar({ activeSection }) {
           ))}
           <a
             className="navbar__resume mono"
-            href="mailto:sonals02.singh@gmail.com"
-            aria-label="Email Sonal"
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download Resume"
           >
-            hire me ↗
+            resume ↗
           </a>
         </nav>
 

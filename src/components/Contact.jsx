@@ -11,7 +11,7 @@ const socials = [
   {
     label: 'LinkedIn',
     handle: 'sonal-singh-dev',
-    href: 'https://linkedin.com/in/sonal-singh-dev',
+    href: 'https://www.linkedin.com/in/sonal-singh-dev/',
     desc: 'professional profile',
   },
   {

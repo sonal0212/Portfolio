@@ -80,7 +80,7 @@ export default function Hero() {
               GitHub ↗
             </a>
             <a
-              href="https://linkedin.com/in/sonal-singh-dev"
+              href="https://www.linkedin.com/in/sonal-singh-dev/"
               target="_blank"
               rel="noopener noreferrer"
               className="hero__link mono"

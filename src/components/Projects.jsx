@@ -36,7 +36,31 @@ const projects = [
     accent: '#1A5C3A',
     rotate: '-1deg',
     label: '03',
-    github: 'https://github.com/sonal0212',
+    github: 'https://receipt-slayer.netlify.app/',
+  },
+  {
+    title: 'Omnifood',
+    subtitle: 'Responsive Food Delivery Website',
+    period: '2023 — 2024',
+    description:
+      'Modern, fully responsive food delivery landing page built with HTML, CSS, and JavaScript. Features smooth scroll navigation, interactive testimonials, and mobile-first design. Showcases best practices in semantic HTML, CSS Grid/Flexbox layouts, and vanilla JavaScript interactions for enhanced UX.',
+    tags: ['HTML', 'CSS', 'JavaScript', 'Responsive Design', 'UI/UX'],
+    accent: '#FF9500',
+    rotate: '1.2deg',
+    label: '04',
+    github: 'https://app.netlify.com/projects/omnifood-sonal/overview',
+  },
+  {
+    title: 'DentalCare',
+    subtitle: 'Healthcare Clinic Management System',
+    period: '2023 — 2024',
+    description:
+      'Full-stack dental clinic website featuring patient booking system, service catalog, and clinic information. Built with responsive design principles to provide seamless experience across devices. Includes appointment scheduling, service listings, and contact integration for modern healthcare service delivery.',
+    tags: ['React', 'HTML', 'CSS', 'Responsive Design', 'Healthcare'],
+    accent: '#4A90E2',
+    rotate: '-1.5deg',
+    label: '05',
+    github: 'https://dentalcare-dev.netlify.app/',
   },
 ]
 
@@ -131,7 +155,7 @@ export default function Projects() {
           <p className="section-stamp">§ 03 — Things I Built</p>
           <h2 className="section-title">Projects I'm <em>proud of.</em></h2>
           <p className="projects__intro">
-            A mix of AI tooling, enterprise systems, and mobile apps — each one taught me something new.
+            A mix of AI tooling, enterprise systems, responsive web applications, and mobile apps — each one taught me something new.
           </p>
         </div>
 
