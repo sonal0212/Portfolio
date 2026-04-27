@@ -11,6 +11,12 @@ export default function Hero() {
     return () => clearTimeout(timer)
   }, [])
 
+  const polaroids = [
+    { src: '/photos/hackathon.jpg', caption: 'AI Trailblazer · Hackathon ’26 Winner', rotate: '-5deg' },
+    { src: '/photos/portrait.jpg', caption: 'Hi, I’m Sonal :)', rotate: '3deg' },
+    { src: '/photos/campus.jpg', caption: 'On Campus, ’26', rotate: '-2deg' },
+  ]
+
   return (
     <section id="about" className="hero" ref={ref}>
       <div className="container">
@@ -24,11 +30,27 @@ export default function Hero() {
             <span className="hero__status-text mono">available for opportunities</span>
           </div>
 
-          {/* Main heading */}
-          <h1 className="hero__name">
-            Sonal<br />
-            <em>Singh.</em>
-          </h1>
+          {/* Heading + polaroids on the right */}
+          <div className="hero__head">
+            <h1 className="hero__name">
+              Sonal<br />
+              <em>Singh.</em>
+            </h1>
+
+            <div className="hero__polaroids" aria-hidden="false">
+              {polaroids.map((p, i) => (
+                <figure
+                  key={i}
+                  className="hero__polaroid"
+                  style={{ '--rotate': p.rotate, '--i': i }}
+                >
+                  <div className="hero__polaroid-tape" />
+                  <img src={p.src} alt={p.caption} loading="lazy" />
+                  <figcaption className="caveat">{p.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
 
           {/* Handwritten subtitle */}
           <p className="hero__subtitle caveat">
