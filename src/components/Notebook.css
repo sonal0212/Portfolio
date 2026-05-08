@@ -765,3 +765,27 @@
     font-size: 0.9rem;
   }
 }
+
+/* ── CERTIFICATE LINKS ── */
+.nb__certs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 1.25rem;
+}
+
+.nb__cert-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s, transform 0.2s;
+  width: fit-content;
+}
+
+.nb__cert-link:hover {
+  opacity: 0.75;
+  transform: translateX(3px);
+}

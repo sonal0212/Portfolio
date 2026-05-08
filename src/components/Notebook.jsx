@@ -10,8 +10,8 @@ const PAGES = [
     stamp: '01',
     content: `I'm Sonal Singh, a full-stack Java developer passionate about building systems that are as elegant under the hood as they are on the surface. My work spans Spring Boot micro-services, React and Next.js front-ends, and AI-powered integrations that solve real business problems. I approach every project with the same philosophy: understand the domain deeply, write clean and testable code, and ship solutions that users genuinely rely on.`,
     photos: [
-      { slot: 'notebook-about-1.jpg', caption: 'Portrait', rotate: '-3deg' },
-      { slot: 'notebook-about-2.jpg', caption: 'At work', rotate: '2deg' },
+      { slot: 'portrait.jpg', caption: 'Portrait', rotate: '-3deg' },
+      { slot: 'at-work.jpg', caption: 'At work', rotate: '2deg' },
     ],
     color: '#4A90D9',
     doodle: 'Code with intention. Build with purpose.',
@@ -23,75 +23,38 @@ const PAGES = [
     stamp: '02',
     content: `Hackathons have been a defining part of my growth as an engineer. Competing in national-level events pushed me to architect solutions under extreme constraints, collaborate with cross-functional teams, and deliver production-ready demos in 24 to 48 hours. From AI-driven platforms to real-time collaboration tools, each hackathon sharpened my ability to prioritize, prototype rapidly, and present with confidence.`,
     photos: [
-      { slot: 'notebook-hack-1.jpg', caption: 'Winning moment', rotate: '-4deg' },
-      { slot: 'notebook-hack-2.jpg', caption: 'Late-night sprint', rotate: '3deg' },
-      { slot: 'notebook-hack-3.jpg', caption: 'Demo day', rotate: '-1deg' },
+      { slot: 'winning-moment.jpg', caption: 'Winning moment', rotate: '-4deg' },
+      { slot: 'late-night-sprint.jpg', caption: 'Late-night sprint', rotate: '3deg' },
+      { slot: 'demo-day.jpg', caption: 'Demo day', rotate: '-1deg' },
     ],
     color: '#E74C3C',
     doodle: 'Ship under pressure. Learn under fire.',
   },
   {
-    id: 'blogs',
-    tab: 'Blogs',
-    title: 'Technical Writing',
-    stamp: '03',
-    content: `I write to deepen my own understanding and to give back to the developer community. My articles cover Java internals, Spring Boot design patterns, AI integration strategies, and lessons learned from production systems. I believe that writing clearly about complex topics is one of the strongest signals of genuine mastery, and I aim to make every piece accessible without sacrificing technical depth.`,
-    photos: [
-      { slot: 'notebook-blog-1.jpg', caption: 'Writing session', rotate: '2deg' },
-      { slot: 'notebook-blog-2.jpg', caption: 'Published work', rotate: '-3deg' },
-    ],
-    color: '#27AE60',
-    doodle: 'If you can explain it simply, you understand it deeply.',
-  },
-  {
     id: 'certifications',
     tab: 'Certifications',
     title: 'Certifications',
-    stamp: '04',
-    content: `Continuous learning is non-negotiable in this field. I pursue certifications not for the credential alone, but for the structured deep-dives they demand. From cloud architecture fundamentals to advanced Java frameworks, each certification represents focused study, hands-on lab work, and a commitment to staying current. They serve as milestones that validate growth and open doors to more complex engineering challenges.`,
-    photos: [
-      { slot: 'notebook-cert-1.jpg', caption: 'Certification earned', rotate: '-2deg' },
-      { slot: 'notebook-cert-2.jpg', caption: 'Credentials', rotate: '4deg' },
+    stamp: '03',
+    content: `Continuous learning is non-negotiable in this field. I pursue certifications not for the credential alone, but for the structured deep-dives they demand. From cloud architecture fundamentals to advanced Java frameworks, each certification represents focused study, hands-on lab work, and a commitment to staying current.`,
+    photos: [],
+    certs: [
+      { name: 'SQL Using MySQL', file: '/certificates/sql-mysql-certificate.pdf' },
+      { name: 'AWS Cloud Solutions Architect (Coursera)', file: '/certificates/aws-architect-certificate.pdf' },
+      { name: 'Full Stack Web Development Bootcamp', file: '/certificates/fullstack-bootcamp-certificate.pdf' },
     ],
     color: '#8E44AD',
     doodle: 'Stay curious. Stay certified. Stay sharp.',
   },
   {
-    id: 'github',
-    tab: 'GitHub',
-    title: 'Open Source & GitHub',
-    stamp: '05',
-    content: `My GitHub profile reflects a commitment to consistent, quality contributions. I maintain personal projects, contribute to tools I depend on, and actively participate in the open-source ecosystem. Every commit represents a deliberate effort to write better code, improve documentation, or solve a real problem. The contribution graph tells a story of discipline and genuine curiosity about how software is built collaboratively.`,
-    photos: [
-      { slot: 'notebook-github-1.jpg', caption: 'Contribution graph', rotate: '1deg' },
-      { slot: 'notebook-github-2.jpg', caption: 'Open source work', rotate: '-3deg' },
-    ],
-    color: '#1A5C3A',
-    doodle: 'Build in public. Contribute with purpose.',
-  },
-  {
-    id: 'problem-solving',
-    tab: 'Problem Solving',
-    title: 'Problem Solving',
-    stamp: '06',
-    content: `Algorithmic thinking sharpens the way I approach every engineering challenge. I regularly solve problems on LeetCode, HackerRank, and LinkedIn skill assessments to keep my fundamentals strong. From optimizing data structures to tackling dynamic programming challenges, this practice builds the kind of analytical rigour that translates directly into writing more efficient, well-reasoned production code.`,
-    photos: [
-      { slot: 'notebook-solve-1.jpg', caption: 'Solving streak', rotate: '-2deg' },
-      { slot: 'notebook-solve-2.jpg', caption: 'LinkedIn assessment', rotate: '3deg' },
-    ],
-    color: '#0A66C2',
-    doodle: 'Strong fundamentals build strong engineers.',
-  },
-  {
     id: 'travelled',
     tab: 'Travelled',
     title: 'Places & Perspectives',
-    stamp: '07',
+    stamp: '04',
     content: `Traveling broadens the lens through which I approach both work and life. Whether attending a tech conference in a new city or exploring a mountain trail solo, every journey adds perspective that shapes how I think about design, collaboration, and problem-solving. The best ideas often emerge when you step away from the screen and immerse yourself in unfamiliar environments and cultures.`,
     photos: [
-      { slot: 'notebook-travel-1.jpg', caption: 'Mountain trails', rotate: '-4deg' },
-      { slot: 'notebook-travel-2.jpg', caption: 'City exploration', rotate: '2deg' },
-      { slot: 'notebook-travel-3.jpg', caption: 'New horizons', rotate: '-1deg' },
+      { slot: 'mountain-trail.jpg', caption: 'Mountain trail', rotate: '-4deg' },
+      { slot: 'new-horizons.jpg', caption: 'New horizons', rotate: '2deg' },
+      { slot: 'n.jpg', caption: 'New places', rotate: '-1deg' },
     ],
     color: '#D97706',
     doodle: 'New places. New perspectives. Better code.',
@@ -362,6 +325,29 @@ export default function Notebook() {
 
               {/* written content */}
               <p className="nb__text kalam">{page.content}</p>
+
+              {/* certificate links */}
+              {page.certs && page.certs.length > 0 && (
+                <div className="nb__certs">
+                  {page.certs.map((cert, i) => (
+                    <a
+                      key={i}
+                      href={cert.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="nb__cert-link caveat"
+                      style={{ color: page.color }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                      </svg>
+                      {cert.name}
+                    </a>
+                  ))}
+                </div>
+              )}
 
               {/* photo collage */}
               <div className={`nb__photos ${photosVisible ? 'nb__photos--show' : ''}`}>

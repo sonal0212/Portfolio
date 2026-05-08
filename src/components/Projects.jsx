@@ -22,18 +22,18 @@ const projects = [
     image: screenshot('https://taskflowwithai.netlify.app/'),
   },
   {
-    title: 'Platform',
-    subtitle: 'Internal Enterprise Application',
+    title: 'GID Supervision',
+    subtitle: 'Field Supervision & Workforce Management',
     period: 'Apr 2024 — Present',
     description:
-      'Push notification microservice delivering real-time alerts to 500+ concurrent users across the org. Interactive reporting engine with a custom SQL join builder and output in multiple ApexCharts types. Hierarchical RBAC supporting admin, manager, and viewer roles across multiple modules.',
+      'End-to-end supervision platform for managing field agents, assignments, and real-time status tracking. Features role-based dashboards for supervisors and agents, attendance logging, task dispatch, and live reporting. Built with a responsive UI to support both desktop supervisors and mobile field workers.',
     tags: ['Java', 'jQuery', 'Node.js', 'PostgreSQL', 'REST API', 'ApexCharts', 'Web Push API'],
     accent: '#2C4A7C',
     rotate: '1.5deg',
     label: '02',
     github: 'https://github.com/sonal0212',
-    live: null,
-    image: screenshot('https://github.com/sonal0212'),
+    live: 'https://gidsupervision.netlify.app/',
+    image: screenshot('https://gidsupervision.netlify.app/', 3000),
   },
   {
     title: 'Receipt Slayer',
