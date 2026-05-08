@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 import './Hero.css'
 
 const FIRST = 'Sonal'
@@ -61,9 +61,9 @@ export default function Hero() {
   const isDone = typed >= TOTAL
 
   const polaroids = [
-    { src: '/photos/hackathon.jpg', caption: 'AI Trailblazer · Hackathon ’26 Winner', rotate: '-5deg' },
-    { src: '/photos/portrait.jpg', caption: 'Hi, I’m Sonal :)', rotate: '3deg' },
-    { src: '/photos/campus.jpg', caption: 'On Campus, ’26', rotate: '-2deg' },
+    { src: '/photos/hackathon.jpg', caption: "AI Trailblazer · Hackathon '26 Winner", rotate: '-5deg' },
+    { src: '/photos/sonal-hero.jpg', caption: "Hi, I'm Sonal :)", rotate: '3deg' },
+    { src: '/photos/campus.jpg', caption: "On Campus, '26", rotate: '-2deg' },
   ]
 
   return (
@@ -136,14 +136,14 @@ export default function Hero() {
             <div className="hero__stat-sep" />
             <div className="hero__stat">
               <span className="hero__stat-num caveat">
-                <CountUp end={25} duration={1500} delay={1850} />
+                <CountUp end={45} duration={1500} delay={1850} />
               </span>
               <span className="hero__stat-label mono">features shipped</span>
             </div>
             <div className="hero__stat-sep" />
             <div className="hero__stat">
               <span className="hero__stat-num caveat">
-                <CountUp end={500} duration={1800} delay={1900} />
+                <CountUp end={5000} duration={1800} delay={1900} />
               </span>
               <span className="hero__stat-label mono">users impacted</span>
             </div>
