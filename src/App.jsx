@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import ScrollProgress from './components/ScrollProgress'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import Notebook from './components/Notebook'
 import Work from './components/Work'
 import Projects from './components/Projects'
 import Skills from './components/Skills'
@@ -33,6 +34,7 @@ function App() {
       <Navbar activeSection={activeSection} />
       <main>
         <Hero />
+        <Notebook />
         <Work />
         <Projects />
         <Skills />

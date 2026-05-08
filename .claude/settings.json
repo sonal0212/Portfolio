@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx vite:*)",
+      "WebFetch(domain:stock.adobe.com)",
+      "WebFetch(domain:elements.envato.com)",
+      "Read(//c/Users/admin/AppData/Local/Temp/**)"
+    ]
+  }
+}

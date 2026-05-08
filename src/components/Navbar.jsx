@@ -3,6 +3,7 @@ import './Navbar.css'
 
 const navItems = [
   { id: 'about', label: 'About' },
+  { id: 'my-journey', label: 'Journey' },
   { id: 'work', label: 'Work' },
   { id: 'projects', label: 'Projects' },
   { id: 'skills', label: 'Skills' },
