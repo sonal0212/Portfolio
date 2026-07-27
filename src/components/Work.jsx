@@ -13,10 +13,11 @@ const experience = [
       'Engineered a robust RBAC framework using Spring Security; reduced security-related support tickets by 25% and ensured 100% compliance with enterprise audit standards.',
       'Optimized PostgreSQL database schemas and refactored SQL queries, resulting in a 40% reduction in query response times and improved overall system reliability.',
       'Developed a real-time push notification system using Web Push API, which increased user engagement by 35% and provided critical alerts for business-critical events.',
+      'Designed and deployed knowledge-based bots leveraging LLMs and retrieval-augmented generation (RAG) to surface answers from internal documentation, reducing manual support lookups and accelerating user self-service.',
       'Managed cloud infrastructure on AWS (EC2, S3) and automated deployment workflows using Docker and GitHub Actions, reducing deployment downtime and streamlining CI/CD pipelines.',
       'Collaborated in an Agile environment to translate complex business requirements into technical specifications, providing production support and root-cause analysis (RCA) for mission-critical APIs.',
     ],
-    tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Spring Security', 'Web Push API', 'AWS', 'Docker', 'GitHub Actions'],
+    tags: ['Java', 'Spring Boot', 'PostgreSQL', 'Spring Security', 'Web Push API', 'AWS', 'Docker', 'GitHub Actions', 'LLM', 'RAG'],
   },
   {
     role: 'Software Developer Intern',
