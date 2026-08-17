@@ -1,0 +1,230 @@
+/* Voice agent section — a taped index card on the notebook page, with the
+   waveform as its centrepiece. */
+
+.va-section__intro {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.05rem;
+  color: var(--ink-light);
+  max-width: 58ch;
+  margin: 0.75rem 0 2.5rem;
+}
+
+/* ── The card ── */
+.va-card {
+  position: relative;
+  max-width: 780px;
+  padding: 2.25rem 2rem 1.5rem;
+  background: var(--paper-dark);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  box-shadow: 5px 6px 0 rgba(44, 24, 16, 0.1);
+  transform: rotate(-0.35deg);
+}
+
+.va-card__tape {
+  position: absolute;
+  top: -11px;
+  left: 42px;
+  width: 96px;
+  height: 24px;
+  background: rgba(192, 57, 43, 0.14);
+  border-left: 1px dashed rgba(44, 24, 16, 0.14);
+  border-right: 1px dashed rgba(44, 24, 16, 0.14);
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+.va-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.va-card__label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.va-loop {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 4px 9px;
+  border: 1px dashed rgba(44, 24, 16, 0.25);
+  border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s;
+}
+
+.va-loop:hover { color: var(--ink); border-color: var(--ink-light); }
+
+.va-loop--on {
+  color: var(--red);
+  border-color: var(--red);
+  border-style: solid;
+}
+
+.va-notice {
+  font-size: 0.65rem;
+  line-height: 1.5;
+  color: var(--ink-light);
+  background: rgba(192, 57, 43, 0.08);
+  border-left: 2px solid var(--red);
+  padding: 8px 12px;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Button + bars ── */
+.va-stage {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.va-btn {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 3px 0 rgba(44, 24, 16, 0.2);
+  transition: transform 0.24s cubic-bezier(0.34, 1.3, 0.64, 1),
+    background 0.24s ease, box-shadow 0.24s ease;
+}
+
+.va-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 3px 5px 0 rgba(44, 24, 16, 0.24);
+}
+
+.va-btn--active {
+  background: var(--red);
+  animation: va-pulse 1.6s ease-in-out infinite;
+}
+
+.va-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+@keyframes va-pulse {
+  0%, 100% { box-shadow: 2px 3px 0 rgba(44, 24, 16, 0.2), 0 0 0 0 rgba(192, 57, 43, 0.4); }
+  50%      { box-shadow: 2px 3px 0 rgba(44, 24, 16, 0.2), 0 0 0 12px rgba(192, 57, 43, 0); }
+}
+
+.va-wave {
+  flex: 1;
+  min-width: 0;
+  height: 72px;
+}
+
+/* preserveAspectRatio="none" stretches the shape to fill the box, which is
+   what we want for the wave — but it would also stretch the stroke into an
+   ellipse, hence non-scaling-stroke on the paths below. */
+.va-wave__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.va-wave__line,
+.va-wave__echo {
+  fill: none;
+  stroke: var(--ink-light);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* At rest every level is 0, so this collapses to a flat horizontal line —
+   it reads as the section's rule, no separate border needed. */
+.va-wave__line {
+  stroke-width: 2;
+  opacity: 0.9;
+}
+
+.va-wave__echo {
+  stroke-width: 1.25;
+  opacity: 0.26;
+}
+
+/* ── Status + transcript ── */
+.va-status {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.25rem;
+}
+
+.va-status--recording,
+.va-status--agent-speak,
+.va-status--agent-reply { color: var(--red); }
+
+.va-transcript {
+  min-height: 96px;
+  padding: 1.1rem 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  /* Ruled lines, like the rest of the site's paper */
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    var(--rule) 27px,
+    var(--rule) 28px
+  );
+  background-size: 100% 28px;
+}
+
+.va-line {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink);
+  animation: va-fade 0.45s ease;
+}
+
+.va-line--user {
+  font-family: 'Caveat', cursive;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: var(--blue-ink);
+}
+
+.va-line--empty { color: var(--ink-faint); font-style: italic; }
+
+@keyframes va-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.va-foot {
+  margin-top: 1.1rem;
+  font-size: 0.95rem;
+  color: var(--ink-faint);
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .va-card { padding: 2rem 1.25rem 1.25rem; transform: none; }
+  .va-stage { gap: 1rem; }
+  .va-btn { width: 50px; height: 50px; }
+  .va-wave { height: 56px; }
+  .va-line { font-size: 0.98rem; }
+  .va-line--user { font-size: 1.35rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The wave's sideways travel is frozen in JS (see PHASE_STEP) rather than
+     here — amplitude still responds, since that's functional feedback. */
+  .va-btn--active { animation: none; }
+  .va-line { animation: none; }
+}

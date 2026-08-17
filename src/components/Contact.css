@@ -148,11 +148,52 @@
   letter-spacing: 0.04em;
 }
 
+/* ── Résumé download ── */
+.contact__resume-card {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 1.75rem 0 1.25rem;
+  padding: 0.8rem 1.1rem;
+  background: var(--paper-dark);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--red);
+  border-radius: 2px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact__resume-card:hover {
+  transform: translateX(3px);
+  box-shadow: 2px 3px 0 rgba(44, 24, 16, 0.12);
+}
+
+.contact__resume-card:hover .contact__resume-role {
+  color: var(--red);
+}
+
+.contact__resume-role {
+  font-size: 1.15rem;
+  color: var(--ink);
+  line-height: 1.2;
+  transition: color 0.25s ease;
+}
+
+.contact__resume-desc {
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+}
+
 @media (max-width: 768px) {
   .contact__layout {
     grid-template-columns: 1fr;
     gap: 2.5rem;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__resume-card { transition: none; }
+  .contact__resume-card:hover { transform: none; }
 }
 
 @media (max-width: 420px) {

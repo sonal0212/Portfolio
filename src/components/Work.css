@@ -188,6 +188,69 @@
   margin-top: 0.5rem;
 }
 
+/* Title progression under the role — the résumé collapses this span into a
+   single line, so the growth story lives here instead. */
+.work-card__progression {
+  font-size: 0.95rem;
+  color: var(--ink-faint);
+  margin-top: 0.3rem;
+  letter-spacing: 0.01em;
+}
+
+/* ── Platform / client engagements ── */
+.work-card__dot--engagement {
+  background: var(--green-ink);
+  box-shadow: 0 0 0 1px var(--green-ink);
+}
+
+.work-card--engagements .work-card__body::before {
+  background: rgba(26, 92, 58, 0.2);
+}
+
+.work-card__engagement-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.25rem;
+}
+
+.work__engagements {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.engagement + .engagement {
+  border-top: 1px dashed var(--rule);
+  padding-top: 1.5rem;
+}
+
+.engagement__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.engagement__name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.engagement__client {
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+}
+
+.engagement__tagline {
+  font-size: 1rem;
+  color: var(--ink-light);
+  margin-bottom: 0.6rem;
+}
+
 .work-card--edu .work-card__body::before {
   background: rgba(44, 74, 124, 0.2);
 }

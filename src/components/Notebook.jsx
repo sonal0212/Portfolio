@@ -8,7 +8,7 @@ const PAGES = [
     tab: 'About Me',
     title: 'About Me',
     stamp: '01',
-    content: `I'm Sonal Singh, a full-stack Java developer passionate about building systems that are as elegant under the hood as they are on the surface. My work spans Spring Boot micro-services, React and Next.js front-ends, and AI-powered integrations that solve real business problems. I approach every project with the same philosophy: understand the domain deeply, write clean and testable code, and ship solutions that users genuinely rely on.`,
+    content: `I'm Sonal Singh, a software engineer building agentic AI and the backends underneath it. My work spans production agent systems — MCP servers, RAG pipelines, multi-provider LLM routing — running on top of the Java and Spring Boot micro-services I own end to end. I approach every project with the same philosophy: understand the domain deeply, write clean and testable code, and ship solutions that users genuinely rely on.`,
     photos: [
       { slot: 'portrait.jpg', caption: 'Portrait', rotate: '-3deg' },
       { slot: 'at-work.jpg', caption: 'At work', rotate: '2deg' },

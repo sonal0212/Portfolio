@@ -86,6 +86,20 @@ export default function Contact() {
               </button>
             </div>
 
+            {/* Single résumé — one canonical file, same as the navbar button */}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Sonal Singh - Resume.pdf"
+              className="contact__resume-card"
+            >
+              <span className="contact__resume-role caveat">Download résumé</span>
+              <span className="contact__resume-desc mono">
+                agentic AI, Java / Spring Boot, PostgreSQL ↓
+              </span>
+            </a>
+
             {/* Handwritten note */}
             <p className="contact__note caveat">
               "Response time: usually same day ✦"

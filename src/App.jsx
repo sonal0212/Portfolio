@@ -7,6 +7,9 @@ import Work from './components/Work'
 import Projects from './components/Projects'
 import Skills from './components/Skills'
 import Contact from './components/Contact'
+import VoiceAnalyzer from './components/Chat/VoiceAnalyzer'
+import ChatWidget from './components/Chat/ChatWidget'
+import { ChatHistoryProvider } from './context/ChatHistoryContext'
 import './App.css'
 
 function App() {
@@ -29,26 +32,32 @@ function App() {
   }, [])
 
   return (
-    <div className="app">
-      <ScrollProgress />
-      <Navbar activeSection={activeSection} />
-      <main>
-        <Hero />
-        <Notebook />
-        <Work />
-        <Projects />
-        <Skills />
-        <Contact />
-      </main>
-      <footer className="site-footer">
-        <div className="container">
-          <p className="footer-text">
-            <span className="caveat">crafted with ♥ by Sonal Singh</span>
-            <span className="footer-year"> — {new Date().getFullYear()}</span>
-          </p>
-        </div>
-      </footer>
-    </div>
+    /* Provider wraps both agent surfaces so a visitor can start in voice and
+       continue in the chat widget without losing the conversation. */
+    <ChatHistoryProvider>
+      <div className="app">
+        <ScrollProgress />
+        <Navbar activeSection={activeSection} />
+        <main>
+          <Hero />
+          <VoiceAnalyzer />
+          <Notebook />
+          <Work />
+          <Projects />
+          <Skills />
+          <Contact />
+        </main>
+        <footer className="site-footer">
+          <div className="container">
+            <p className="footer-text">
+              <span className="caveat">crafted with ♥ by Sonal Singh</span>
+              <span className="footer-year"> — {new Date().getFullYear()}</span>
+            </p>
+          </div>
+        </footer>
+        <ChatWidget />
+      </div>
+    </ChatHistoryProvider>
   )
 }
 

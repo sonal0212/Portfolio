@@ -111,18 +111,18 @@ export default function Hero() {
 
           {/* Handwritten subtitle */}
           <p className="hero__subtitle caveat">
-            Full-Stack Java Developer ✦ AI Integrations ✦ 2+ yrs
+            Software Engineer ✦ Agentic AI & LLM Systems ✦ 2+ yrs
           </p>
 
           <div className="hero__divider" />
 
           {/* Summary */}
           <p className="hero__summary">
-            Results-driven developer who turns complex business problems into clean,
-            scalable systems. I specialise in{' '}
-            <mark>Spring Boot</mark>, <mark>React/Next.js</mark>, and{' '}
-            <mark>AI/LLM integrations</mark> — from databases and APIs to shipping
-            real-time collaborative platforms.
+            Results-driven engineer who turns complex business problems into clean,
+            scalable systems. I ship production{' '}
+            <mark>agentic AI</mark> — MCP servers, <mark>RAG pipelines</mark>, and
+            multi-provider LLM routing — on top of the{' '}
+            <mark>Java / Spring Boot</mark> backends I build and own.
           </p>
 
           {/* Quick stats */}

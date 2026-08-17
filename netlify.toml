@@ -6,7 +6,67 @@
   NODE_VERSION = "18"
   NPM_FLAGS = "--include=dev"
 
+# Voice agent proxies live in netlify/functions/*.mjs and declare their own
+# /api/* routes via `export const config = { path: ... }`, so they need no
+# redirect rules here. The SPA fallback below must not swallow them.
+[functions]
+  directory = "netlify/functions"
+
+# Explicit function routes FIRST — redirect rules are evaluated top-down and
+# first match wins, so these guarantee /api/* reaches the functions and never
+# falls through to the SPA catch-all below.
+[[redirects]]
+  from = "/api/sarvam/tts"
+  to = "/.netlify/functions/tts"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/sarvam/stt"
+  to = "/.netlify/functions/stt"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/sarvam/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/embed"
+  to = "/.netlify/functions/embed"
+  status = 200
+  force = true
+
+# SPA fallback — must stay last.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # microphone=(self) is REQUIRED — without it the browser blocks
+    # getUserMedia even after the visitor grants permission.
+    Permissions-Policy = "camera=(), geolocation=(), microphone=(self), payment=(), usb=()"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    # connect-src stays 'self' plus microlink (project screenshots) because
+    # every AI call is proxied through our own /api/* functions.
+    # media-src blob: is required for MediaSource TTS playback.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: data:; connect-src 'self' https://api.microlink.io; worker-src 'self' blob:; frame-ancestors 'self'; base-uri 'self'; form-action 'self' mailto:; object-src 'none'; upgrade-insecure-requests"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store, max-age=0"
+    X-Robots-Tag = "noindex"
+
+[[headers]]
+  for = "/resume.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
