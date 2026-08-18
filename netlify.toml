@@ -12,33 +12,6 @@
 [functions]
   directory = "netlify/functions"
 
-# Explicit function routes FIRST — redirect rules are evaluated top-down and
-# first match wins, so these guarantee /api/* reaches the functions and never
-# falls through to the SPA catch-all below.
-[[redirects]]
-  from = "/api/sarvam/tts"
-  to = "/.netlify/functions/tts"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/sarvam/stt"
-  to = "/.netlify/functions/stt"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/sarvam/chat"
-  to = "/.netlify/functions/chat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/embed"
-  to = "/.netlify/functions/embed"
-  status = 200
-  force = true
-
 # SPA fallback — must stay last.
 [[redirects]]
   from = "/*"
