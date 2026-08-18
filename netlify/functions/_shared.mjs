@@ -129,7 +129,22 @@ export function guard(req, method = 'POST') {
     const allowed = getAllowedOrigins()
     const preview = getPreviewMatcher()
     if (!allowed.has(origin) && !(preview && preview.test(origin))) {
-      return json({ error: 'Forbidden origin' }, 403)
+      /* Say which kind of failure this is. An empty allow-list means
+         ALLOWED_ORIGINS never reached this function — not set, not scoped to
+         Functions, or set on a different deploy context — which is a very
+         different fix from a value that is present but doesn't match. Only
+         the size is reported, never the entries. */
+      console.warn(
+        `[proxy] rejected origin ${origin}; allow-list has ${allowed.size} entr` +
+          `${allowed.size === 1 ? 'y' : 'ies'}`
+      )
+      return json(
+        {
+          error: 'Forbidden origin',
+          reason: allowed.size === 0 ? 'allow-list-empty' : 'origin-not-listed',
+        },
+        403
+      )
     }
   }
 
