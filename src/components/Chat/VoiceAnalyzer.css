@@ -122,37 +122,32 @@
   flex: 1;
   min-width: 0;
   height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
-
-/* preserveAspectRatio="none" stretches the shape to fill the box, which is
-   what we want for the wave — but it would also stretch the stroke into an
-   ellipse, hence non-scaling-stroke on the paths below. */
-.va-wave__svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+.va-bar {
+  /* flex-basis 0 with flex-grow 1 makes every column share the width evenly,
+     so the strip always spans the full panel however many bands there are. */
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--ink-light);
+  /* One column of round dots tiled vertically from the centre outwards, so a
+     taller bar simply reveals more of them — and it mirrors above and below
+     the centreline for free. Ink on paper, no panel: the strip belongs to the
+     page rather than sitting on a screen embedded in it. */
+  background-image: radial-gradient(circle, currentColor 42%, transparent 46%);
+  background-size: 5px 7px;
+  background-repeat: repeat-y;
+  background-position: center center;
+  /* Short enough to still feel instant, long enough that 60fps analyser
+     updates don't strobe. */
+  transition: height 70ms linear;
 }
-
-.va-wave__line,
-.va-wave__echo {
-  fill: none;
-  stroke: var(--ink-light);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-
-/* At rest every level is 0, so this collapses to a flat horizontal line —
-   it reads as the section's rule, no separate border needed. */
-.va-wave__line {
-  stroke-width: 2;
-  opacity: 0.9;
-}
-
-.va-wave__echo {
-  stroke-width: 1.25;
-  opacity: 0.26;
+@media (prefers-reduced-motion: reduce) {
+  .va-bar {
+    transition: none;
+  }
 }
 
 /* ── Status + transcript ── */

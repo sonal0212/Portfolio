@@ -18,61 +18,68 @@ import './VoiceAnalyzer.css'
 const GREETING =
   "Hi, I'm Sonal's assistant. She's a software engineer at PetroIT building agentic AI — MCP servers, RAG pipelines, and the Spring Boot backends underneath them. Press the mic and ask me anything about her work."
 
-/* ── Waveform geometry ──
-   The SVG is stretched to fill its box (preserveAspectRatio="none"), so these
-   are shape units, not pixels. Strokes stay round via non-scaling-stroke. */
-const VIEW_W = 100
-const VIEW_H = 40
-const MID = VIEW_H / 2
-const AMPLITUDE = 18 // leaves headroom at the top of the box on a full-volume peak
-const WAVES = 2.6 // crests visible across the full width
-const PHASE_STEP = 0.16 // radians per frame — how fast the wave travels left to right
+/* ── Bar geometry ──
+   Columns are laid out by flexbox, so there is no viewBox to reason about:
+   each bar is just a height percentage and the browser handles the widths. */
+const BAR_MIN_PCT = 9 // a silent band still shows one dot, like an idle LED strip
+const BAR_MAX_PCT = 100
+const PHASE_STEP = 0.16 // radians per frame — drives the idle shimmer only
 
-/* Sampled analyser levels -> points on a travelling wave. Each sample is
-   phase-offset from its neighbour (that's what makes it flow) and its height
-   is that frequency band's amplitude, so silence collapses the whole thing
-   onto the centreline. Tapered at both ends so the line settles into the rule
-   instead of being chopped off by the edge of the box. */
-function wavePoints(levels, phase, offset, scale) {
-  const n = levels.length
-  const span = Math.max(1, n - 1)
-  const k = (WAVES * Math.PI * 2) / span
-  const pts = new Array(n)
-  for (let i = 0; i < n; i++) {
-    const taper = Math.sin((Math.PI * i) / span)
-    const y = MID + Math.sin(phase + offset + i * k) * levels[i] * taper * AMPLITUDE * scale
-    pts[i] = [(i / span) * VIEW_W, y]
+/* The slice of spectrum worth drawing. Voice runs roughly 80 Hz to 8 kHz;
+   everything above that is hiss the columns would render as permanent dead
+   space on the right of the strip. */
+const BAND_LO_HZ = 80
+const BAND_HI_HZ = 8000
+
+/* FFT bin -> band edges, spaced logarithmically across the voice range.
+
+   Slicing linearly across the whole spectrum is why the strip only lit up on
+   the left. Two things were wrong: a linear slice puts every speech formant
+   in the first few bins, and the top half of the range carries no voice
+   energy at all. So the bands are log-spaced (perceptually even, matching how
+   pitch is heard) AND clamped to BAND_LO_HZ..BAND_HI_HZ. */
+function logBandEdges(binCount, bands, sampleRate) {
+  const nyquist = sampleRate / 2
+  const hzPerBin = nyquist / binCount
+  const lo = Math.max(1, Math.floor(BAND_LO_HZ / hzPerBin))
+  const hi = Math.max(lo + bands, Math.min(binCount, Math.ceil(BAND_HI_HZ / hzPerBin)))
+  const edges = new Array(bands + 1)
+  for (let i = 0; i <= bands; i++) {
+    edges[i] = Math.round(lo * Math.pow(hi / lo, i / bands))
   }
-  return pts
+  /* Guarantee strictly increasing edges — at the low end the log curve
+     rounds several bands onto the same bin. */
+  for (let i = 1; i <= bands; i++) {
+    if (edges[i] <= edges[i - 1]) edges[i] = edges[i - 1] + 1
+  }
+  return edges
 }
 
-/* Reduced-motion visitors keep the amplitude response — that's functional
-   feedback that the mic is hearing them — but lose the sideways travel. */
+/* Peak within each band rather than the mean: averaging across a wide high
+   band washes out exactly the transients that make the strip look alive.
+   The tilt compensates for natural spectral rolloff, otherwise the right
+   half stays visibly shorter than the left even with log spacing. */
+function bandLevels(data, edges, bands) {
+  const out = new Array(bands)
+  for (let i = 0; i < bands; i++) {
+    let peak = 0
+    const end = Math.min(edges[i + 1], data.length)
+    for (let j = edges[i]; j < end; j++) {
+      if (data[j] > peak) peak = data[j]
+    }
+    const tilt = 1 + (i / bands) * 1.6
+    out[i] = Math.min(1, (peak / 255) * tilt)
+  }
+  return out
+}
+
+/* Reduced-motion visitors keep the amplitude response — that is functional
+   feedback that the mic is hearing them — but lose the idle shimmer. */
 const wavePhaseStep = () =>
   typeof window !== 'undefined' &&
   window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     ? 0
     : PHASE_STEP
-
-/* Catmull-Rom spline through the points, emitted as cubic beziers. Without
-   this the wave is a polyline and reads as jagged at 56 samples. */
-function smoothPath(pts) {
-  if (pts.length < 2) return ''
-  const n = (v) => v.toFixed(2)
-  let d = `M${n(pts[0][0])},${n(pts[0][1])}`
-  for (let i = 0; i < pts.length - 1; i++) {
-    const p0 = pts[i - 1] || pts[i]
-    const p1 = pts[i]
-    const p2 = pts[i + 1]
-    const p3 = pts[i + 2] || p2
-    const c1x = p1[0] + (p2[0] - p0[0]) / 6
-    const c1y = p1[1] + (p2[1] - p0[1]) / 6
-    const c2x = p2[0] - (p3[0] - p1[0]) / 6
-    const c2y = p2[1] - (p3[1] - p1[1]) / 6
-    d += ` C${n(c1x)},${n(c1y)} ${n(c2x)},${n(c2y)} ${n(p2[0])},${n(p2[1])}`
-  }
-  return d
-}
 
 export default function VoiceAnalyzer({ variant = 'feature' }) {
   const kb = useMemo(() => buildKnowledgeBase(), [])
@@ -163,6 +170,11 @@ export default function VoiceAnalyzer({ variant = 'feature' }) {
      the speaker has been active and then quiet for SILENCE_HANG_MS. */
   const runAnalyserLoop = (analyser, vadStop) => {
     const data = new Uint8Array(analyser.frequencyBinCount)
+    const edges = logBandEdges(
+      analyser.frequencyBinCount,
+      SAMPLE_COUNT,
+      analyser.context.sampleRate
+    )
 
     let hasSpoken = false
     let lastVoiceAt = performance.now()
@@ -175,15 +187,16 @@ export default function VoiceAnalyzer({ variant = 'feature' }) {
 
     const tick = () => {
       analyser.getByteFrequencyData(data)
-      const step = Math.floor(data.length / SAMPLE_COUNT) || 1
-      const next = []
-      let sum = 0
-      for (let i = 0; i < SAMPLE_COUNT; i++) {
-        const v = data[i * step] / 255
-        next.push(v)
-        sum += v
-      }
-      const avg = sum / SAMPLE_COUNT
+      const next = bandLevels(data, edges, SAMPLE_COUNT)
+
+      /* VAD deliberately measures the raw spectrum mean, not the bar levels.
+         Those are per-band peaks with a treble tilt applied for looks; feeding
+         them to the threshold would redefine what counts as speech and throw
+         off the silence timing that ends a turn. */
+      let raw = 0
+      for (let j = 0; j < data.length; j++) raw += data[j]
+      const avg = raw / data.length / 255
+
       setWave((w) => ({ levels: next, phase: w.phase + phaseStep }))
 
       if (vadStop && !vadFired) {
@@ -230,7 +243,11 @@ export default function VoiceAnalyzer({ variant = 'feature' }) {
         const progress = Math.min(1, (performance.now() - startedAt) / FALLBACK_MS)
         const envelope = Math.sin(Math.PI * progress) * 0.45
         setWave((w) => ({
-          levels: Array(SAMPLE_COUNT).fill(envelope),
+          /* Vary by column so the fallback reads as a strip responding, not a
+             single block rising and falling together. */
+          levels: Array.from({ length: SAMPLE_COUNT }, (_, i) =>
+            Math.max(0, envelope * (0.55 + 0.45 * Math.sin(w.phase + i * 0.5)))
+          ),
           phase: w.phase + phaseStep,
         }))
         rafRef.current = requestAnimationFrame(tick)
@@ -251,7 +268,7 @@ export default function VoiceAnalyzer({ variant = 'feature' }) {
         mediaSourceMapRef.current.set(audio, source)
       }
       const analyser = ctx.createAnalyser()
-      analyser.fftSize = 64
+      analyser.fftSize = 512
       analyser.smoothingTimeConstant = 0.7
       source.connect(analyser)
       analyser.connect(ctx.destination)
@@ -311,7 +328,7 @@ export default function VoiceAnalyzer({ variant = 'feature' }) {
       const ctx = await ensureCtx()
       const source = ctx.createMediaStreamSource(stream)
       const analyser = ctx.createAnalyser()
-      analyser.fftSize = 128
+      analyser.fftSize = 512
       analyser.smoothingTimeConstant = 0.6
       source.connect(analyser)
 
@@ -421,18 +438,6 @@ export default function VoiceAnalyzer({ variant = 'feature' }) {
 
   const speaking = stage === 'agent-speak' || stage === 'agent-reply' || stage === 'recording'
 
-  /* Three passes of the same wave — two low-opacity echoes running ahead and
-     behind the main line at reduced amplitude. Costs one extra path each and
-     is what turns a single stroke into something that reads as liquid. */
-  const wavePaths = useMemo(
-    () => [
-      smoothPath(wavePoints(wave.levels, wave.phase, -0.9, 0.55)),
-      smoothPath(wavePoints(wave.levels, wave.phase, 0.9, 0.75)),
-      smoothPath(wavePoints(wave.levels, wave.phase, 0, 1)),
-    ],
-    [wave]
-  )
-
   return (
     <section id="ask" className="va-section">
       <div className="container">
@@ -482,15 +487,13 @@ export default function VoiceAnalyzer({ variant = 'feature' }) {
             </button>
 
             <div className="va-wave" aria-hidden="true">
-              <svg
-                className="va-wave__svg"
-                viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-                preserveAspectRatio="none"
-              >
-                <path className="va-wave__echo" d={wavePaths[0]} />
-                <path className="va-wave__echo" d={wavePaths[1]} />
-                <path className="va-wave__line" d={wavePaths[2]} />
-              </svg>
+              {wave.levels.map((v, i) => (
+                <span
+                  key={i}
+                  className="va-bar"
+                  style={{ height: `${BAR_MIN_PCT + v * (BAR_MAX_PCT - BAR_MIN_PCT)}%` }}
+                />
+              ))}
             </div>
           </div>
 
