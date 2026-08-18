@@ -15,3 +15,7 @@ server.js
 app.js
 comparative_insights.json
 styles.css
+
+# Local Netlify folder
+.netlify
+deno.lock

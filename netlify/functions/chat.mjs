@@ -81,7 +81,7 @@ export default async function handler(req) {
         'api-subscription-key': key,
       },
       body: JSON.stringify({
-        model: 'sarvam-m',
+        model: 'sarvam-105b',
         messages,
         temperature: 0.3,
         /* Sarvam's reasoning models spend tokens on hidden reasoning_content
