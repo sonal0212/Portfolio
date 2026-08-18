@@ -244,9 +244,14 @@ export default function ChatWidget() {
           )}
 
           <div className="chat-scroll" ref={scrollRef}>
-            {messages.map((m) => {
+            {messages.map((m, i) => {
               const isUser = m.role === 'user'
               const rowClass = isUser ? 'user' : 'agent'
+              /* Only the newest agent reply carries a replay button — a column
+                 of ▶ glyphs down the whole transcript is visual noise. An older
+                 message keeps its button while it is actually playing, so the
+                 control you pressed can still be pressed again to stop. */
+              const isLastAgent = !isUser && !messages.slice(i + 1).some((n) => n.role !== 'user')
               return (
                 <div key={m.id} className={`chat-row chat-row--${rowClass}`}>
                   {isUser && m.source === 'voice' && (
@@ -255,7 +260,7 @@ export default function ChatWidget() {
                     </span>
                   )}
                   <div className={`chat-msg chat-msg--${rowClass}`}>{m.text}</div>
-                  {!isUser && (
+                  {!isUser && (isLastAgent || speakingId === m.id) && (
                     <button
                       type="button"
                       className={`chat-replay${speakingId === m.id ? ' chat-replay--speaking' : ''}`}

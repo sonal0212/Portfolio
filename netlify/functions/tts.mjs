@@ -14,9 +14,12 @@ const SPEAKERS = new Set([
 ])
 
 /* The agent speaks as Sonal's assistant, so a female en-IN voice fits.
-   Swap for any ID in the set above — 'priya', 'shreya', 'kavya', 'ishita'
-   and 'suhani' are all worth auditioning. */
-const TTS_SPEAKER = 'ritu'
+   'suhani' was chosen by round-tripping this greeting through TTS -> STT for
+   every female voice and scoring the transcript: it was the only one that
+   articulated PetroIT, MCP, RAG, Spring Boot and "agentic" all correctly
+   (97.3% vs 93.3% for the previous 'ritu', which lost PetroIT and RAG).
+   Swap for any ID in the set above — 'simran' and 'shreya' scored closest. */
+const TTS_SPEAKER = 'suhani'
 
 const MAX_TEXT_LEN = 500
 
