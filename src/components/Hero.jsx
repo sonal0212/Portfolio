@@ -74,11 +74,6 @@ export default function Hero() {
           <span className="hero__margin-note caveat">§ 01 — About</span>
 
           {/* Status badge */}
-          <div className="hero__status">
-            <span className="hero__status-dot" />
-            <span className="hero__status-text mono">available for opportunities</span>
-          </div>
-
           {/* Heading + polaroids on the right */}
           <div className="hero__head">
             <h1 className="hero__name" aria-label="Sonal Singh">

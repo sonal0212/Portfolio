@@ -150,6 +150,9 @@ export default function Notebook() {
   const [photosVisible, setPhotosVisible] = useState(false)
   const sectionRef = useRef(null)
   const pageAreaRef = useRef(null)
+  /* The book, not the section. The section can be taller than the viewport, so
+     centring it would still leave the book off-centre. */
+  const bookRef = useRef(null)
 
   /* reveal photos after page settles */
   useEffect(() => {
@@ -166,43 +169,12 @@ export default function Notebook() {
     setIsOpen(true)
   }, [isOpen])
 
-  /* click page: left half = prev, right half = next */
-  const handlePageClick = useCallback(
-    (e) => {
-      if (flipping || !isOpen) return
-      const rect = pageAreaRef.current?.getBoundingClientRect()
-      if (!rect) return
-      const clickX = e.clientX - rect.left
-      const half = rect.width / 2
-
-      let nextIdx
-      if (clickX < half) {
-        nextIdx = currentPage - 1
-      } else {
-        nextIdx = currentPage + 1
-      }
-
-      if (nextIdx < 0 || nextIdx >= PAGES.length) return
-
-      const dir = nextIdx > currentPage ? 'next' : 'prev'
-      setFlipDir(dir)
-      setFlipping(true)
-      playPageFlipSound()
-      setTimeout(() => {
-        setCurrentPage(nextIdx)
-        setFlipping(false)
-        setFlipDir(null)
-      }, 600)
-    },
-    [currentPage, flipping, isOpen]
-  )
-
-  /* tab click */
-  const goTo = useCallback(
+  /* One flip, one place. Click, tab and scroll all route through this so the
+     sound, the 600ms animation window and the flipping lock stay in step. */
+  const flipTo = useCallback(
     (idx) => {
-      if (flipping || idx === currentPage || idx < 0 || idx >= PAGES.length || !isOpen) return
-      const dir = idx > currentPage ? 'next' : 'prev'
-      setFlipDir(dir)
+      if (flipping || idx === currentPage || idx < 0 || idx >= PAGES.length) return
+      setFlipDir(idx > currentPage ? 'next' : 'prev')
       setFlipping(true)
       playPageFlipSound()
       setTimeout(() => {
@@ -211,8 +183,174 @@ export default function Notebook() {
         setFlipDir(null)
       }, 600)
     },
-    [currentPage, flipping, isOpen]
+    [currentPage, flipping]
   )
+
+  /* Past the last page the book shuts and returns to the red cover, resetting
+     to page one so the next open starts at the beginning rather than the end. */
+  const closeToCover = useCallback(() => {
+    if (flipping || !isOpen) return
+    setFlipDir('next')
+    setFlipping(true)
+    playPageFlipSound()
+    setTimeout(() => {
+      setIsOpen(false)
+      setCurrentPage(0)
+      setFlipping(false)
+      setFlipDir(null)
+    }, 600)
+  }, [flipping, isOpen])
+
+  /* click page: left half = prev, right half = next */
+  const handlePageClick = useCallback(
+    (e) => {
+      if (flipping || !isOpen) return
+      const rect = pageAreaRef.current?.getBoundingClientRect()
+      if (!rect) return
+      const forward = e.clientX - rect.left >= rect.width / 2
+
+      if (forward && currentPage === PAGES.length - 1) {
+        closeToCover()
+        return
+      }
+      flipTo(currentPage + (forward ? 1 : -1))
+    },
+    [currentPage, flipping, isOpen, flipTo, closeToCover]
+  )
+
+  /* tab click */
+  const goTo = useCallback(
+    (idx) => {
+      if (!isOpen) return
+      flipTo(idx)
+    },
+    [isOpen, flipTo]
+  )
+
+  /* ── scroll-driven paging ──
+     While the notebook is engaged the document does not move at all: the wheel
+     is intercepted at the window and turns pages instead. A shut cover opens,
+     each notch forward turns one page, and the notch past the last page shuts
+     the book back to the red cover and hands scrolling back.
+
+     consumedRef is the escape hatch, and it is the whole reason this is safe.
+     Without it the section is a scroll trap: closing at the last page leaves a
+     shut cover, the very next notch would reopen it, and a visitor could never
+     scroll past the notebook. */
+  const consumedRef = useRef(false)
+  const [engaged, setEngaged] = useState(false)
+
+  /* Engage only once the notebook genuinely owns the screen. Taking the wheel
+     away the instant a corner appears would feel like the page had snagged. */
+  useEffect(() => {
+    const el = bookRef.current
+    if (!el) return
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          /* Re-arm on the way out so returning to the notebook works. */
+          consumedRef.current = false
+          setEngaged(false)
+          return
+        }
+        if (entry.intersectionRatio >= 0.55 && !consumedRef.current) setEngaged(true)
+      },
+      { threshold: [0, 0.55, 0.9] }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  /* Bring the book to the middle of the screen before it takes over the wheel,
+     so paging always happens with the book centred rather than wherever the
+     visitor happened to stop scrolling. */
+  useEffect(() => {
+    if (!engaged) return
+    bookRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  }, [engaged])
+
+  useEffect(() => {
+    if (!engaged) return
+
+    /* Starts locked: the centring scroll above is still animating, and a notch
+       arriving mid-glide would turn a page before the book had settled. */
+    let lock = true
+    window.setTimeout(() => {
+      lock = false
+    }, 600)
+    const hold = (ms) => {
+      lock = true
+      window.setTimeout(() => {
+        lock = false
+      }, ms)
+    }
+
+    /* Bound to the window, not the section: the pointer does not have to stay
+       over the book, and nothing gets through to the document. Body overflow is
+       deliberately left alone — hiding it would collapse the scrollbar and jog
+       the whole layout sideways the moment the notebook engaged. */
+    /* Hand the wheel back to the document. Once released, the guard at the top
+       of onWheel lets events through immediately, without waiting for this
+       effect to tear its listeners down. */
+    const release = () => {
+      consumedRef.current = true
+      setEngaged(false)
+    }
+
+    const onWheel = (e) => {
+      if (consumedRef.current) return /* released: the document scrolls normally */
+      e.preventDefault()
+      if (lock || flipping || Math.abs(e.deltaY) < 6) return
+      const down = e.deltaY > 0
+
+      if (!isOpen) {
+        if (!down) {
+          /* Nothing to turn back to; release upward so the visitor can leave. */
+          release()
+          return
+        }
+        hold(900)
+        openNotebook()
+        return
+      }
+      if (down) {
+        if (currentPage === PAGES.length - 1) {
+          /* Sit still until the cover has actually landed. closeToCover runs a
+             600ms flip before the book reads as shut, and releasing on the same
+             tick let the page scroll away mid-swing. Keep swallowing the wheel
+             across the animation, then hand scrolling back. */
+          hold(1200)
+          closeToCover()
+          window.setTimeout(release, 900)
+          return
+        }
+        hold(700)
+        flipTo(currentPage + 1)
+        return
+      }
+      if (currentPage === 0) {
+        release()
+        return
+      }
+      hold(700)
+      flipTo(currentPage - 1)
+    }
+
+    /* Keys scroll too, so they get the same treatment while engaged. */
+    const SCROLL_KEYS = new Set([' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'])
+    const onKey = (e) => {
+      if (!consumedRef.current && SCROLL_KEYS.has(e.key)) e.preventDefault()
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [engaged, isOpen, currentPage, flipping, openNotebook, flipTo, closeToCover])
 
   const page = PAGES[currentPage]
 
@@ -228,7 +366,7 @@ export default function Notebook() {
         </p>
 
         {/* ── THE NOTEBOOK ── */}
-        <div className={`nb ${isOpen ? 'nb--open' : ''}`}>
+        <div className={`nb ${isOpen ? 'nb--open' : ''}`} ref={bookRef}>
 
           {/* cover — user clicks to open */}
           <div className="nb__cover" onClick={openNotebook}>
